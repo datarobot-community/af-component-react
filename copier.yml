@@ -4,16 +4,14 @@ react_app_name:
   default: "frontend"
   help: "The name/folder of your React Frontend"
 
-
 base_answers_file:
   type: str
   default: ".datarobot/base-answers.yml"
   help: "Path to the base component answers file"
 
-
 # Grab the base component answers to re-use answers
-_external_data_files:
+_external_data:
   base: "{{ base_answers_file }}"
 
-_subdirectory: {{ react_app_name }}
-_answers_file: .datarobot/react-{{ react_app_name }}-answers.yml
+_subdirectory: template
+_answers_file: ".datarobot/react-{{ react_app_name }}-answers.yml"
