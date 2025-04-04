@@ -23,3 +23,9 @@ To work, it expects the base component https://github.com/datarobot/af-component
 To update
 
 `uvx copier update -a .datarobot/react-{{ react_app }}-answers.yml -A`
+
+To update all templates that are copied:
+
+`uvx copier update -a .datarobot/*-answers.yaml`
+or just
+`uvx copier update -a .datarobot/*`
