@@ -11,11 +11,15 @@ Covers the basic structure and answers needed to have a basic React app that is 
 
 To start for a repo:
 
-`uvx copier copy https://github.com/datarobot/af-component-base .`
+`uvx copier copy https://github.com/datarobot/af-component-react .`
 
-If a template requires multiple React frontends, it can be used multiple types with a different component name
+If a template requires multiple React frontends, it can be used multiple times with a different answer to the `react_app` question.
+
+To work, it expects the base component https://github.com/datarobot/af-component-base has already been installed. To do that first, run:
+
+`uvx copier copy https://github.com/datarobot/af-component-base .`
 
 
 To update
 
-`uvx copier update -a .datarobot/base-answers.yml -A`
+`uvx copier update -a .datarobot/react-{{ react_app }}-answers.yml -A`
