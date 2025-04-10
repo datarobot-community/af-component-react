@@ -19,13 +19,15 @@ To work, it expects the base component https://github.com/datarobot/af-component
 
 `uvx copier copy https://github.com/datarobot/af-component-base .`
 
+and it also needs a web host as the backend to the frontend:
+
+`uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .`
+
 
 To update
 
-`uvx copier update -a .datarobot/react-{{ react_app }}-answers.yml -A`
+`uvx copier update -a .datarobot/answers/react-{{ react_app }}.yml -A`
 
 To update all templates that are copied:
 
-`uvx copier update -a .datarobot/*-answers.yaml`
-or just
-`uvx copier update -a .datarobot/*`
+`uvx copier update -a .datarobot/answers/*.yaml -A`
