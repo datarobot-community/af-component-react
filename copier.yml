@@ -11,7 +11,7 @@ base_answers_file:
 
 fastapi_answers_file:
   type: str
-  default: ".datarobot/answers/web.yml"
+  default: ".datarobot/answers/fastapi-web.yml"
   help: "Path to the FastAPI answers file you want to pair with this frontend"
 
 # Grab the base component answers to re-use answers
