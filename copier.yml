@@ -1,7 +1,7 @@
 # questions
 react_app_name:
   type: str
-  default: "web_frontend"
+  default: "frontend_web"
   help: "The name/folder of your React Frontend"
 
 base_answers_file:
