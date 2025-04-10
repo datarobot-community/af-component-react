@@ -1,0 +1,19 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: '../{{ _external_data.fastapi.fastapi_app_name }}/static/',
+    emptyOutDir: true, // also necessary
+  },
+  server: {
+    proxy: {
+      '/api/v1': {
+        target: 'http://localhost:{{ _external_data.fastapi.fastapi_local_port }}',
+        changeOrigin: true,
+      }
+    }
+  }
+})
