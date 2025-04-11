@@ -1,17 +1,23 @@
 # questions
 react_app_name:
   type: str
-  default: "frontend"
+  default: "frontend_web"
   help: "The name/folder of your React Frontend"
 
 base_answers_file:
   type: str
-  default: ".datarobot/base-answers.yml"
+  default: ".datarobot/answers/base.yml"
   help: "Path to the base component answers file"
+
+fastapi_answers_file:
+  type: str
+  default: ".datarobot/answers/fastapi-web.yml"
+  help: "Path to the FastAPI answers file you want to pair with this frontend"
 
 # Grab the base component answers to re-use answers
 _external_data:
   base: "{{ base_answers_file }}"
+  fastapi: "{{ fastapi_answers_file }}"
 
 _subdirectory: template
-_answers_file: ".datarobot/react-{{ react_app_name }}-answers.yml"
+_answers_file: ".datarobot/answers/react-{{ react_app_name }}.yml"
