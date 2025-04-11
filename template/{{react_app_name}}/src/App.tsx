@@ -8,7 +8,7 @@ function App() {
   const [welcome, setWelcome] = useState('Loading...')
 
   const fetchWelcome = async () => {
-    const response = await fetch('/api/v1/welcome')
+    const response = await fetch('./api/v1/welcome')
     const data = await response.json()
     setWelcome(data.message)
   }
