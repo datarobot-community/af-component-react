@@ -1,0 +1,20 @@
+version: '3'
+
+env:
+  SRCDIR: ./template/{{"{{"}}react_app_name{{"}}"}}/app
+  TESTDIR: ./template/{{"{{"}}react_app_name{{"}}"}}/tests
+
+tasks:
+  copyright:
+    aliases: [license]
+    desc: 📜 Apply license headers
+    cmds:
+      - echo "📜 Applying license headers"
+      - docker run  --rm -v $PWD:/github/workspace ghcr.io/apache/skywalking-eyes/license-eye:eb0e0b091ea41213f712f622797e37526ca1e5d6 -v info -c .licenserc.yaml header fix
+
+  copyright-check:
+    aliases: [license-check]
+    desc: 📜 Checking for license headers
+    cmds:
+      - echo "📜 Checking license headers"
+      - docker run  --rm -v $PWD:/github/workspace ghcr.io/apache/skywalking-eyes/license-eye:eb0e0b091ea41213f712f622797e37526ca1e5d6 -v info -c .licenserc.yaml header check
