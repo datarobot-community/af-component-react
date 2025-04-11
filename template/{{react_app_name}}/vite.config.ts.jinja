@@ -7,7 +7,6 @@ export default defineConfig({
   base: "",
   build: {
     outDir: '../{{ _external_data.fastapi.fastapi_app_name }}/static/',
-    emptyOutDir: true, // also necessary
   },
   server: {
     proxy: {
