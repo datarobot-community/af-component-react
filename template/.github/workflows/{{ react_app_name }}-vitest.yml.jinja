@@ -30,7 +30,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up node
+      - name: Set up Node.js {% raw %}${{ matrix.node-version }}{% endraw %}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
