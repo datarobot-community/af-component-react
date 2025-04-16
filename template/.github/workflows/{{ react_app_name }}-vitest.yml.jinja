@@ -1,22 +1,22 @@
 ---
-name: Run vitest for {{ react_app_name }}
+name: Test {{ react_app_name }}
 
 on:
   push:
     branches: ["main"]
     paths:
-      - '{{ react_app_name }}/src/**'
+      - '{{ react_app_name }}/**'
 
   pull_request:
     branches: ["main"]
     paths:
-      - '{{ react_app_name }}/src/**'
+      - '{{ react_app_name }}/**'
 
   workflow_dispatch:
 
 jobs:
   tests:
-    name: "React vitest: {{ react_app_name }} {% raw %}${{ matrix.node-version }}{% endraw %}"
+    name: "React: {{ react_app_name }} node: {% raw %}${{ matrix.node-version }}{% endraw %}"
     runs-on: ubuntu-latest
     defaults:
       run:
