@@ -1,0 +1,44 @@
+---
+name: Test {{ react_app_name }}
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - '{{ react_app_name }}/**'
+
+  pull_request:
+    branches: ["main"]
+    paths:
+      - '{{ react_app_name }}/**'
+
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: "React: {{ react_app_name }} node: {% raw %}${{ matrix.node-version }}{% endraw %}"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend_web
+
+    strategy:
+      matrix:
+        node-version: ["18", "20", "22"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js {% raw %}${{ matrix.node-version }}{% endraw %}
+        uses: actions/setup-node@v4
+        with:
+          node-version: {% raw %}${{ matrix.node-version }}{% endraw %}
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: {{ react_app_name }}
+
+      - name: Run Vitest
+        run: npm run test
+        working-directory: {{ react_app_name }}
