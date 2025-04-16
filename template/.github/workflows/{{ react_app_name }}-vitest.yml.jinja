@@ -5,12 +5,12 @@ on:
   push:
     branches: ["main"]
     paths:
-      - 'src/**'
+      - '{{ react_app_name }}/src/**'
 
   pull_request:
     branches: ["main"]
     paths:
-      - 'src/**'
+      - '{{ react_app_name }}/src/**'
 
   workflow_dispatch:
 
