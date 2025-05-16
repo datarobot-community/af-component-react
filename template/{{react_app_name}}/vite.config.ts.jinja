@@ -41,7 +41,7 @@ export default defineConfig({
     host: true,
     allowedHosts: ["localhost", "127.0.0.1", ".datarobot.com"],
     proxy: {
-      [`${proxyBase}api/v1`]: {
+      [`${proxyBase}api/`]: {
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(new RegExp(`^${proxyBase}`), ''),
