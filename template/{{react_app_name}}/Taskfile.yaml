@@ -16,7 +16,11 @@ tasks:
   test:
     desc: 🧪 Test React code
     cmds:
-      - npm run test:coverage
+      - npm run test
+  test-watch:
+    desc: 🧪👀 Continuously Test React code
+    cmds:
+      - npm run test:watch
   build:
     desc: 🏗️ Build React code
     cmds:
