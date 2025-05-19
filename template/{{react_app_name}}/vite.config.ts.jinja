@@ -1,18 +1,50 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
+import { VITE_DEFAULT_PORT } from "./src/constants/dev";
+
+let base: string = '';
+// if NOTEBOOK_ID is set, use /notebook-sessions/${NOTEBOOK_ID}/ports/5173/ as the base
+if (process.env.NOTEBOOK_ID) {
+  const notebookId = process.env.NOTEBOOK_ID;
+  base = `/notebook-sessions/${notebookId}/ports/${VITE_DEFAULT_PORT}/`;
+}
+const proxyBase: string = base === '' ? '/' : base;
+
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base: "",
+  plugins: [
+    react(),
+    {
+        name: 'strip-base',
+        apply: 'serve',
+        configureServer({ middlewares }) {
+          middlewares.use((req, _res, next) => {
+            if (base !== '' && !req.url?.startsWith(base)) {
+              req.url = base.slice(0, -1) + req.url;
+            }
+            next();
+          });
+        },
+      },
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  base: base,
   build: {
     outDir: '../{{ _external_data.fastapi.fastapi_app_name }}/static/',
   },
   server: {
+    host: true,
+    allowedHosts: ["localhost", "127.0.0.1", ".datarobot.com"],
     proxy: {
-      '/api/v1': {
-        target: 'http://localhost:{{ _external_data.fastapi.fastapi_local_port }}',
+      [`${proxyBase}api/`]: {
+        target: 'http://localhost:8080',
         changeOrigin: true,
+        rewrite: (path) => path.replace(new RegExp(`^${proxyBase}`), ''),
       }
     }
   },
