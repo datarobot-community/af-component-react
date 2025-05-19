@@ -5,7 +5,6 @@ import { VITE_DEFAULT_PORT } from "../constants/dev";
 const relativeApiUrl = "./api";
 
 // Pull this in from index.html so that we're getting the actual real URL before anyone does URL rewriting
-// @ts-ignore
 const fullUrl = typeof window !== "undefined" && window.ORIGINAL_BASE_PATH ? window.ORIGINAL_BASE_PATH : "";
 
 export const getApiUrl = () => {
