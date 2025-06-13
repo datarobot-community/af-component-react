@@ -4,6 +4,9 @@ export {};
 
 declare global {
   interface Window {
-    ORIGINAL_BASE_PATH?: string
+    ENV: {
+      BASE_PATH?: string;
+      API_PORT?: string;
+    };
   }
 }

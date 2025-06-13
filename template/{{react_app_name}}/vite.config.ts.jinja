@@ -1,12 +1,12 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
-import { VITE_DEFAULT_PORT } from "./src/constants/dev";
+import { VITE_DEFAULT_PORT } from './src/constants/dev';
 
 let base: string = '';
-// if NOTEBOOK_ID is set, use /notebook-sessions/${NOTEBOOK_ID}/ports/5173/ as the base
-if (process.env.NOTEBOOK_ID) {
-  const notebookId = process.env.NOTEBOOK_ID;
-  base = `/notebook-sessions/${notebookId}/ports/${VITE_DEFAULT_PORT}/`;
+// 1. if NOTEBOOK_ID is set, use /notebook-sessions/${NOTEBOOK_ID}/ports/5173/ for dev server
+if (process.env.NOTEBOOK_ID && process.env.NODE_ENV === 'development') {
+    const notebookId = process.env.NOTEBOOK_ID;
+    base = `/notebook-sessions/${notebookId}/ports/${VITE_DEFAULT_PORT}/`;
 }
 const proxyBase: string = base === '' ? '/' : base;
 
@@ -36,6 +36,7 @@ export default defineConfig({
   base: base,
   build: {
     outDir: '../{{ _external_data.fastapi.fastapi_app_name }}/static/',
+    manifest: true,
   },
   server: {
     host: true,
