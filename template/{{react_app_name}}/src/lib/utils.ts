@@ -1,7 +1,7 @@
-import { VITE_STATIC_DEFAULT_PORT, VITE_DEFAULT_PORT } from "@/constants/dev";
+import { VITE_DEFAULT_PORT } from "@/constants/dev";
 
 export function getApiPort() {
-  return window.ENV?.API_PORT || VITE_STATIC_DEFAULT_PORT;
+  return window.ENV?.API_PORT;
 }
 
 export function getBaseUrl() {
