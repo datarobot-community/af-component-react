@@ -1,26 +1,11 @@
 import axios from "axios";
 
-import { VITE_DEFAULT_PORT } from "../constants/dev";
+import { getApiUrl } from "@/lib/utils";
 
-const relativeApiUrl = "./api";
-
-// Pull this in from index.html so that we're getting the actual real URL before anyone does URL rewriting
-const fullUrl = typeof window !== "undefined" && window.ORIGINAL_BASE_PATH ? window.ORIGINAL_BASE_PATH : "";
-
-export const getApiUrl = () => {
-  // Adjust API URL based on the environment
-  let apiBaseURL: string = relativeApiUrl
-
-  // If we're running in Codespaces, we need to manage the relative URL to the API
-  if (fullUrl.includes("notebook-sessions") && fullUrl.includes(`ports/${VITE_DEFAULT_PORT}`)) {
-    apiBaseURL = fullUrl.endsWith("/") ? fullUrl.slice(0, -1) : fullUrl;
-    apiBaseURL += "/api";
-  }
-  return apiBaseURL;
-}
+const baseApiUrl = getApiUrl();
 
 const apiClient = axios.create({
-  baseURL: `${getApiUrl()}`,
+  baseURL: baseApiUrl,
   headers: {
     Accept: "application/json",
     "Content-type": "application/json",
