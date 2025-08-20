@@ -29,7 +29,7 @@ def build_frontend():
     frontend_dir = project_dir / "{{ react_app_name }}"
 
     build_react_app = command.local.Command(
-        f"Talk to My Docs [{PROJECT_NAME}] Build Frontend",
+        f"{{ _external_data.base.template_name }} [{PROJECT_NAME}] Build Frontend",
         create=f"cd {frontend_dir} && npm install && npm run build",
         triggers=[str(time.time())],  # This will cause rebuild every time
         opts=pulumi.ResourceOptions(
