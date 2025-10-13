@@ -10,7 +10,9 @@
     "lint:fix": "npm run prettier:fix && eslint . --fix",
     "preview": "vite preview",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prettier": "prettier --check --config .prettierrc.json ./src",
+    "prettier:fix": "prettier --write --config .prettierrc.json ./src"
   },
   "dependencies": {
     "react": "^19.0.0",
