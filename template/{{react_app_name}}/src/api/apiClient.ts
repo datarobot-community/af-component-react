@@ -15,9 +15,9 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-axiosRetry(apiClient, { 
+axiosRetry(apiClient, {
     retries: 5,
-    retryDelay: axiosRetry.exponentialDelay, 
+    retryDelay: axiosRetry.exponentialDelay,
 });
 
 export default apiClient;
