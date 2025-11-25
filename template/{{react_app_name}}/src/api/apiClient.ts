@@ -1,6 +1,9 @@
 import axios from "axios";
+import axiosRetry from 'axios-retry';
 
 import { getApiUrl } from "@/lib/utils";
+
+axiosRetry(axios, { retries: 5 });
 
 const baseApiUrl = getApiUrl();
 
