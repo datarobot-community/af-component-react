@@ -3,7 +3,6 @@ import axiosRetry from 'axios-retry';
 
 import { getApiUrl } from "@/lib/utils";
 
-axiosRetry(axios, { retries: 5 });
 
 const baseApiUrl = getApiUrl();
 
@@ -14,6 +13,11 @@ const apiClient = axios.create({
     "Content-type": "application/json",
   },
   withCredentials: true,
+});
+
+axiosRetry(apiClient, { 
+    retries: 5,
+    retryDelay: axiosRetry.exponentialDelay, 
 });
 
 export default apiClient;
