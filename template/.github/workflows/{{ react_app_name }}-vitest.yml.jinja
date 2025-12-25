@@ -31,12 +31,12 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up Node.js {% raw %}${{ matrix.node-version }}{% endraw %}
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: {% raw %}${{ matrix.node-version }}{% endraw %}
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: {{ react_app_name }}
 
       - name: Run Vitest
