@@ -31,3 +31,37 @@ To update
 To update all templates that are copied:
 
 `uvx copier update -a .datarobot/answers/*.yaml -A`
+
+### Sibling with fastapi-backend
+
+When pairing with https://github.com/datarobot/af-component-fastapi-backend there is a manual step to make the integration fully compatible. In `infra/infra/web.py` / the fastapi server component name, you'll need to import the react component you want:
+```python
+```
+And then down in the files for the ApplicationSource, you need to change it from:
+```python
+{{fastapi_app_name}}_app_source = pulumi_datarobot.ApplicationSource(
+    files=get_{{fastapi_app_name}}_app_files(runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters),
+    runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters,
+    resources=pulumi_datarobot.ApplicationSourceResourcesArgs(
+        resource_label=CustomAppResourceBundles.CPU_XL.value.id,
+    ),
+    required_key_scope_level=required_key_scope_level,
+    **{{fastapi_app_name}}_app_source_args,
+)
+```
+to:
+```
+{{fastapi_app_name}}_app_source = pulumi_datarobot.ApplicationSource(
+    files=frontend_web.stdout.apply(
+        lambda _: get_{{fastapi_app_name}}_app_files((
+            runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters
+        )
+    ),
+    runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters,
+    resources=pulumi_datarobot.ApplicationSourceResourcesArgs(
+        resource_label=CustomAppResourceBundles.CPU_XL.value.id,
+    ),
+    required_key_scope_level=required_key_scope_level,
+    **{{fastapi_app_name}}_app_source_args,
+)
+```
