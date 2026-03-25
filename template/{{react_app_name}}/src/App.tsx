@@ -14,48 +14,58 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/assets/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { ThemeToggle } from '@/components/block/theme-toggle';
+import { Button } from '@/components/ui/button';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/assets/vite.svg';
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [welcome, setWelcome] = useState('Loading...')
+  const [count, setCount] = useState(0);
+  const [welcome, setWelcome] = useState('Loading...');
 
   const fetchWelcome = async () => {
-    const response = await fetch('./api/v1/welcome')
-    const data = await response.json()
-    setWelcome(data.message)
-  }
+    const response = await fetch('./api/v1/welcome');
+    const data = await response.json();
+    setWelcome(data.message);
+  };
   useEffect(() => {
-    fetchWelcome()
-  }, [])
+    fetchWelcome();
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <header className="flex justify-end p-4">
+        <ThemeToggle />
+      </header>
+      <div className="mx-auto max-w-5xl p-8 text-center">
+        <div className="flex items-center justify-center gap-8">
+          <a href="https://vite.dev" target="_blank">
+            <img
+              src={viteLogo}
+              className="h-24 p-6 transition-[filter] duration-300 hover:drop-shadow-[0_0_2em_#646cffaa]"
+              alt="Vite logo"
+            />
+          </a>
+          <a href="https://react.dev" target="_blank">
+            <img
+              src={reactLogo}
+              className="h-24 animate-spin p-6 transition-[filter] duration-300 [animation-duration:20s] hover:drop-shadow-[0_0_2em_#61dafbaa]"
+              alt="React logo"
+            />
+          </a>
+        </div>
+        <h1 className="heading-01 my-4">Vite + React: {welcome}</h1>
+        <div className="p-8">
+          <Button onClick={() => setCount(count => count + 1)}>count is {count}</Button>
+          <p className="mt-4">
+            Edit <code className="code">src/App.tsx</code> and save to test HMR
+          </p>
+        </div>
+        <p className="body-secondary">Click on the Vite and React logos to learn more</p>
       </div>
-      <h1>Vite + React: {welcome}</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

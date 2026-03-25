@@ -1,5 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vitest/config'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { VITE_DEFAULT_PORT } from './src/constants/dev';
 
@@ -15,6 +16,7 @@ const proxyBase: string = base === '' ? '/' : base;
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     react(),
     {
         name: 'strip-base',
