@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { getBaseUrl } from '@/lib/utils.ts';
 import { ThemeProvider } from '@/theme/theme-provider';
 
-import './index.css'
-import App from './App.tsx'
+import './index.css';
+import App from './App.tsx';
 
 const basename = getBaseUrl();
 
-
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ThemeProvider>
-      <Router basename={basename}>
-        <App />
-      </Router>
-    </ThemeProvider>
-  </StrictMode>,
-)
+    <StrictMode>
+        <ThemeProvider>
+            <Router basename={basename}>
+                <App />
+            </Router>
+        </ThemeProvider>
+    </StrictMode>
+);
