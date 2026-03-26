@@ -1,4 +1,10 @@
-import { VITE_STATIC_DEFAULT_PORT, VITE_DEFAULT_PORT } from "@/constants/dev";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { VITE_STATIC_DEFAULT_PORT, VITE_DEFAULT_PORT } from '@/constants/dev';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 export function getApiPort() {
     return window.ENV?.API_PORT || VITE_STATIC_DEFAULT_PORT;
