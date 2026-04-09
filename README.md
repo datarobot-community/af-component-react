@@ -1,60 +1,174 @@
-# af-component-react
+<p align="center">
+  <a href="https://github.com/datarobot-community/af-component-react">
+    <img src="https://af.datarobot.com/img/datarobot_logo.avif" width="600px" alt="DataRobot Logo"/>
+  </a>
+</p>
+<p align="center">
+    <span style="font-size: 1.5em; font-weight: bold; display: block;">af-component-react</span>
+</p>
 
-The React Frontend One-to-Many component from [App Framework Studio](https://github.com/datarobot/app-framework-studio)
+<p align="center">
+  <a href="https://datarobot.com">Homepage</a>
+  ·
+  <a href="https://af.datarobot.com">Documentation</a>
+  ·
+  <a href="https://docs.datarobot.com/en/docs/get-started/troubleshooting/general-help.html">Support</a>
+</p>
 
-Covers the basic structure and answers needed to have a basic React app that is deployable as part of an App Template
+<p align="center">
+  <a href="https://github.com/datarobot-community/af-component-react/tags">
+    <img src="https://img.shields.io/github/v/tag/datarobot-community/af-component-react?label=version" alt="Latest Release">
+  </a>
+  <a href="/LICENSE">
+    <img src="https://img.shields.io/github/license/datarobot-community/af-component-react" alt="License">
+  </a>
+</p>
 
-* Part of https://datarobot.atlassian.net/wiki/spaces/BOPS/pages/6542032899/App+Framework+-+Studio
+The React Frontend Component. Adds a React frontend to an existing fastapi-server component.
 
+`af-component-react` is an App Framework component for developers building DataRobot App Templates who need a ready-made React UI layer wired to a FastAPI backend. It is designed for app developers who want to ship a web interface without hand-rolling the build pipeline and deployment wiring from scratch.
 
-## Instructions
-
-To start for a repo:
-
-`uvx copier copy https://github.com/datarobot/af-component-react .`
-
-If a template requires multiple React frontends, it can be used multiple times with a different answer to the `react_app` question.
-
-To work, it expects the base component https://github.com/datarobot/af-component-base has already been installed. To do that first, run:
-
-`uvx copier copy https://github.com/datarobot/af-component-base .`
-
-and it also needs a web host as the backend to the frontend:
-
-`uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .`
+The component ships a React app scaffold, a Vite build pipeline, and the Pulumi infrastructure glue that embeds the compiled frontend into a DataRobot `ApplicationSource`. Because the component is repeatable, it can be applied more than once to add multiple independent React frontends to a single project — each with its own answer file and app name.
 
 
-To update
+# Table of contents
 
-`uvx copier update -a .datarobot/answers/react-{{ react_app }}.yml -A`
+- [Prerequisites](#prerequisites)
+- [Quick start](#quick-start)
+- [Component dependencies](#component-dependencies)
+- [Local development](#local-development)
+- [Troubleshooting](#troubleshooting)
+- [Next steps and cross-links](#next-steps-and-cross-links)
+- [Contributing, changelog, support, and legal](#contributing-changelog-support-and-legal)
 
-To update all templates that are copied:
 
-`uvx copier update -a .datarobot/answers/*.yaml -A`
+# Prerequisites
 
-### Sibling with fastapi-backend
+- Python 3.11+
+- [`uv`](https://docs.astral.sh/uv/) installed
+- [`dr`](https://cli.datarobot.com) installed
+- Node.js 18+ (required for the React/Vite build)
+- The [`base`](https://github.com/datarobot-community/af-component-base) component already applied to your project
+- The [`fastapi-backend`](https://github.com/datarobot-community/af-component-fastapi-backend) component already applied to your project
 
-When pairing with https://github.com/datarobot/af-component-fastapi-backend there is a manual step to make the integration fully compatible. In `infra/infra/web.py` / the fastapi server component name, you'll need to import the react component you want:
 
-```python
-from .{{ react_app_name }} import {{ react_app_name }}
+# Quick start
+
+Run the following command in your project directory:
+
+```bash
+dr component add https://github.com/datarobot-community/af-component-react .
+```
+
+Alternatively, you can use `uvx` copier:
+
+```bash
+uvx copier copy datarobot-community/af-component-react .
+```
+
+The copier wizard will ask for a `react_app` name (e.g. `frontend`). This name is used to namespace the generated files and answer file.
+
+**Adding a second frontend** — because this component is repeatable, run the command again and supply a different `react_app` name:
+
+```bash
+uvx copier copy https://github.com/datarobot-community/af-component-react .
+```
+
+**Updating the component** — to pull in changes for a specific frontend:
+
+```bash
+uvx copier update -a .datarobot/answers/react-<react_app>.yml -A
+```
+
+To update all copied components at once:
+
+```bash
+uvx copier update -a .datarobot/answers/*.yaml -A
 ```
 
 
-And then down in the files for the ApplicationSource, you need to change this line:
+# Component dependencies
+
+## Required
+
+The following components must be applied to the project **before** this component:
+
+| Name | Repository | Repeatable |
+|------|-----------|------------|
+| `base` | [https://github.com/datarobot-community/af-component-base](https://github.com/datarobot-community/af-component-base) | No |
+| `fastapi-backend` | [https://github.com/datarobot-community/af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) | No |
+
+# Local development
+
+## Wiring the React frontend to the FastAPI backend
+
+After applying both this component and `fastapi-backend`, one manual step is required to connect them in the Pulumi infrastructure. In `infra/infra/web.py` (the file generated by the fastapi-backend component), import the React frontend module:
+
+```python
+from .<react_app_name> import <react_app_name>
+```
+
+Then update the `ApplicationSource` for your FastAPI app to wait for the frontend build before collecting app files:
+
 ```diff
-{{fastapi_app_name}}_app_source = pulumi_datarobot.ApplicationSource(
--    files=get_{{fastapi_app_name}}_app_files(runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters),
+<fastapi_app_name>_app_source = pulumi_datarobot.ApplicationSource(
+-    files=get_<fastapi_app_name>_app_files(runtime_parameter_values=<fastapi_app_name>_app_runtime_parameters),
 +    files=frontend_web.stdout.apply(
-+        lambda _: get_{{fastapi_app_name}}_app_files((
-+            runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters
++        lambda _: get_<fastapi_app_name>_app_files((
++            runtime_parameter_values=<fastapi_app_name>_app_runtime_parameters
 +        )
 +    ),
-    runtime_parameter_values={{fastapi_app_name}}_app_runtime_parameters,
+    runtime_parameter_values=<fastapi_app_name>_app_runtime_parameters,
     resources=pulumi_datarobot.ApplicationSourceResourcesArgs(
         resource_label=CustomAppResourceBundles.CPU_XL.value.id,
     ),
     required_key_scope_level=required_key_scope_level,
-    **{{fastapi_app_name}}_app_source_args,
+    **<fastapi_app_name>_app_source_args,
 )
 ```
+
+This ensures the Vite build completes before Pulumi collects the compiled assets for deployment.
+
+## Running locally
+
+Start the Vite dev server from the generated frontend directory:
+
+```bash
+cd frontend_<react_app_name>
+npm install
+npm run dev
+```
+
+The dev server proxies API requests to the FastAPI backend running on its configured port. See the generated `vite.config.ts` for proxy settings.
+
+
+# Troubleshooting
+
+**Frontend assets not included in the deployed app**
+: You likely skipped the `ApplicationSource` wiring step above. Confirm that `files=` uses `.stdout.apply(...)` rather than calling `get_*_app_files(...)` directly.
+
+**`uvx copier copy` fails on Node version**
+: The Vite build requires Node.js 18+. Run `node --version` and upgrade if needed.
+
+**Multiple frontends stomping on each other**
+: Each `react_app` name must be unique. Check `.datarobot/answers/` — each frontend should have its own `react-<name>.yml` file.
+
+**Copier update overwrites local changes**
+: Copier tracks which answers you gave and re-applies them during `update`. Customizations outside the generated scaffold should be placed in files that copier does not manage.
+
+
+# Next steps and cross-links
+
+- [App Framework documentation](https://af.datarobot.com) — full reference for components, templates, and deployment
+- [af-component-base](https://github.com/datarobot-community/af-component-base) — required foundation component
+- [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) — the FastAPI backend this component pairs with
+- [App Framework Studio — Confluence](https://datarobot.atlassian.net/wiki/spaces/BOPS/pages/6542032899/App+Framework+-+Studio) — internal architecture and design decisions
+
+
+# Contributing, changelog, support, and legal
+
+**Contributing** — open a pull request against the `main` branch. Run `task lint` before submitting. See [CONTRIBUTING.md](CONTRIBUTING.md) if present.
+
+**Getting help** — file a GitHub Issue in this repository or reach out via the DataRobot [support portal](https://docs.datarobot.com/en/docs/get-started/troubleshooting/general-help.html).
+
+**License** — released under the terms in [LICENSE](LICENSE).
