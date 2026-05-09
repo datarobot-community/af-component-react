@@ -29,7 +29,7 @@ jobs:
         shell: sh
         working-directory: ./rendered/frontend_web
         run: |
-          npm install
+          npm install --include=optional
       - name: Run linter
         shell: sh
         working-directory: ./rendered/frontend_web
