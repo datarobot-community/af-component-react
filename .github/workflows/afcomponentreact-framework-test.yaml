@@ -19,7 +19,9 @@ jobs:
         uses: "actions/checkout@v5"
       - name: Install Node.js
         run: |
-          apt-get update && apt-get install -y nodejs npm --no-install-recommends
+          apt-get update && apt-get install -y ca-certificates curl gnupg --no-install-recommends
+          curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+          apt-get install -y nodejs --no-install-recommends
       - name: Render template
         uses: datarobot-oss/copier-template-validator@main
         with:
@@ -29,7 +31,7 @@ jobs:
         shell: sh
         working-directory: ./rendered/frontend_web
         run: |
-          npm install --include=optional
+          npm install
       - name: Run linter
         shell: sh
         working-directory: ./rendered/frontend_web
