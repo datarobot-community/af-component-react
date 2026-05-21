@@ -28,13 +28,14 @@ The React Frontend Component. Adds a react frontend to an existing fastapi-serve
 
 `af-component-react` is an App Framework component for developers building DataRobot App Templates who need a ready-made React UI layer wired to a FastAPI backend. It is designed for app developers who want to ship a web interface without hand-rolling the build pipeline and deployment wiring from scratch.
 
-The component ships a React app scaffold, a Vite build pipeline, and the Pulumi infrastructure glue that embeds the compiled frontend into a DataRobot `ApplicationSource`. Because the component is repeatable, you can apply it more than once to add multiple independent React frontends to a single project — each with its own answer file and app name.
+The component ships a React app scaffold, a Vite build pipeline, the [dr-ui](https://dr-ui.datarobot.com/en/docs/) component registry, and the Pulumi infrastructure glue that embeds the compiled frontend into a DataRobot `ApplicationSource`. Because the component is repeatable, you can apply it more than once to add multiple independent React frontends to a single project — each with its own answer file and app name.
 
 
 # Table of contents
 
 - [Prerequisites](#prerequisites)
 - [Quick start](#quick-start)
+- [UI components (dr-ui)](#ui-components-dr-ui)
 - [Component dependencies](#component-dependencies)
   - [Required](#required)
   - [Local development](#local-development)
@@ -77,6 +78,13 @@ The copier wizard asks for a `react_app` name (for example, `frontend`). This na
 ```bash
 uvx copier copy https://github.com/datarobot-community/af-component-react .
 ```
+
+
+# UI components (dr-ui)
+
+The React scaffold ships with [dr-ui](https://dr-ui.datarobot.com/en/docs/) preconfigured — DataRobot's internal [shadcn](https://ui.shadcn.com/) component registry. It includes design [tokens](https://dr-ui.datarobot.com/en/docs/foundation/tokens/), [typography classes](https://dr-ui.datarobot.com/en/docs/foundation/typography/), UI primitives, and higher-level components such as Chat, Grid, etc. Everything is built on shadcn-compatible tokens, so you can theme and customize any component while still inheriting the DataRobot design system by default.
+
+See the [dr-ui documentation](https://dr-ui.datarobot.com/en/docs/) for the component catalog and instructions for adding components to your project.
 
 
 # Component dependencies
