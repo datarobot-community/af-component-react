@@ -1,0 +1,44 @@
+---
+name: af-component-react Framework
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  test-framework:
+    name: "Test Framework"
+    runs-on: "ubuntu-latest"
+    container:
+      image: ghcr.io/astral-sh/uv:python3.11-bookworm
+    steps:
+      - name: Checkout
+        uses: "actions/checkout@v5"
+      - name: Install Node.js
+        run: |
+          apt-get update && apt-get install -y ca-certificates curl gnupg --no-install-recommends
+          curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+          apt-get install -y nodejs --no-install-recommends
+      - name: Render template
+        uses: datarobot-oss/copier-template-validator@main
+        with:
+          working-directory: .
+          rendered-dir: ./rendered
+      - name: Install dependencies
+        shell: sh
+        working-directory: ./rendered/frontend_web
+        run: |
+          npm install
+      - name: Run linter
+        shell: sh
+        working-directory: ./rendered/frontend_web
+        run: |
+          npm run lint
+      - name: Run tests
+        shell: sh
+        working-directory: ./rendered/frontend_web
+        run: |
+          npm run test
