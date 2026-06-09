@@ -1,0 +1,7 @@
+display_name: "React"
+description: "Deploys a React frontend paired with a FastAPI backend."
+tags: []
+repeatable: react_app_name
+dependencies:
+  - base
+  - fastapi_backend
