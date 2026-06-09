@@ -1,0 +1,7 @@
+import { appHandlers } from './handlers/app';
+{{ "" | subcomponent_include("test_handler_imports.jinja") }}
+
+export const handlers = [
+    ...appHandlers,
+    {{ "" | subcomponent_include("test_handler_entries.jinja") }}
+];

@@ -15,12 +15,23 @@
  */
 
 import { useState, useEffect } from 'react';
+{% if 'react-chat' not in topological_labels %}
 import { ThemeToggle } from '@/components/block/theme-toggle';
 import { Button } from '@/components/ui/button';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/assets/vite.svg';
+{% endif %}
+{% if 'react-chat' in topological_labels %}
+import Pages from '@/pages';
+{% endif %}
+{{ "" | subcomponent_include("App_imports.jinja") }}
 
+{% if 'react-chat' in topological_labels %}
+export function App() {
+{% else %}
 function App() {
+{% endif %}
+{% if 'react-chat' not in topological_labels %}
     const [count, setCount] = useState(0);
     const [welcome, setWelcome] = useState('Loading...');
 
@@ -32,8 +43,14 @@ function App() {
     useEffect(() => {
         fetchWelcome();
     }, []);
+{% endif %}
 
-    return (
+    {{ "" | subcomponent_include("App_mount_effects.jinja") }}
+
+    let content: React.ReactNode = (
+{% if 'react-chat' in topological_labels %}
+        <Pages />
+{% else %}
         <>
             <header className="flex justify-end p-4">
                 <ThemeToggle />
@@ -65,7 +82,14 @@ function App() {
                 <p className="body-secondary">Click on the Vite and React logos to learn more</p>
             </div>
         </>
+{% endif %}
     );
+
+    {{ "" | subcomponent_include("App_providers.jinja") }}
+
+    return content;
 }
 
+{% if 'react-chat' not in topological_labels %}
 export default App;
+{% endif %}
