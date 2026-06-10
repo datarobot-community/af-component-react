@@ -1,5 +1,5 @@
 import { type RouteObject } from 'react-router-dom';
-{% if 'react-chat' in topological_labels %}
+{% if 'react_chat' in topological_labels %}
 import { MainLayout } from '@/pages/MainLayoutWithChatList';
 {% endif %}
 {{ "" | subcomponent_include("routesConfig_imports.jinja") }}
@@ -7,7 +7,7 @@ import { MainLayout } from '@/pages/MainLayoutWithChatList';
 export const appRoutes: RouteObject[] = [
     {{ "" | subcomponent_include("top_level_routes.jinja") }}
     {
-{% if 'react-chat' in topological_labels %}
+{% if 'react_chat' in topological_labels %}
         element: <MainLayout />,
 {% endif %}
         children: [

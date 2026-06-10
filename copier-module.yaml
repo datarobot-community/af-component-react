@@ -1,9 +1,9 @@
-module: af-component-react
+module: react
 short_description: |
   The React Frontend Component. Adds a react frontend to an existing fastapi-server component.
 repeatable: true
 depends_on:
   base:
     url: https://github.com/datarobot-community/af-component-base
-  fastapi-backend:
+  fastapi_backend:
     url: https://github.com/datarobot-community/af-component-fastapi-backend
