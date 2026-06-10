@@ -15,23 +15,23 @@
  */
 
 import { useState, useEffect } from 'react';
-{% if 'react_chat' not in topological_labels %}
+{% if 'react_chat' not in my_transitive_reverse_dependency_modules %}
 import { ThemeToggle } from '@/components/block/theme-toggle';
 import { Button } from '@/components/ui/button';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/assets/vite.svg';
 {% endif %}
-{% if 'react_chat' in topological_labels %}
+{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
 import Pages from '@/pages';
 {% endif %}
 {{ "" | subcomponent_include("App_imports.jinja") }}
 
-{% if 'react_chat' in topological_labels %}
+{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
 export function App() {
 {% else %}
 function App() {
 {% endif %}
-{% if 'react_chat' not in topological_labels %}
+{% if 'react_chat' not in my_transitive_reverse_dependency_modules %}
     const [count, setCount] = useState(0);
     const [welcome, setWelcome] = useState('Loading...');
 
@@ -48,7 +48,7 @@ function App() {
     {{ "" | subcomponent_include("App_mount_effects.jinja") }}
 
     let content: React.ReactNode = (
-{% if 'react_chat' in topological_labels %}
+{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
         <Pages />
 {% else %}
         <>
@@ -90,6 +90,6 @@ function App() {
     return content;
 }
 
-{% if 'react_chat' not in topological_labels %}
+{% if 'react_chat' not in my_transitive_reverse_dependency_modules %}
 export default App;
 {% endif %}

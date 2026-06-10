@@ -1,5 +1,5 @@
 import { type RouteObject } from 'react-router-dom';
-{% if 'react_chat' in topological_labels %}
+{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
 import { MainLayout } from '@/pages/MainLayoutWithChatList';
 {% endif %}
 {{ "" | subcomponent_include("routesConfig_imports.jinja") }}
@@ -7,7 +7,7 @@ import { MainLayout } from '@/pages/MainLayoutWithChatList';
 export const appRoutes: RouteObject[] = [
     {{ "" | subcomponent_include("top_level_routes.jinja") }}
     {
-{% if 'react_chat' in topological_labels %}
+{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
         element: <MainLayout />,
 {% endif %}
         children: [
