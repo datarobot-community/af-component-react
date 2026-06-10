@@ -90,14 +90,16 @@ const Button = React.forwardRef<
     React.ComponentProps<'button'> &
         VariantProps<typeof BUTTON_VARIANTS> & {
             asChild?: boolean;
+            testId?: string;
         }
->(({ className, variant, size, asChild = false, ...props }, ref) => {
+>(({ className, variant, size, asChild = false, testId, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
 
     return (
         <Comp
             ref={ref}
             data-slot="button"
+            data-testid={testId}
             className={cn(BUTTON_VARIANTS({ variant, size, className }))}
             {...props}
         />
