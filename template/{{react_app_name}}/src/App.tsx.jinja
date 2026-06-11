@@ -26,11 +26,7 @@ import Pages from '@/pages';
 {% endif %}
 {{ "" | subcomponent_include("App_imports.jinja") }}
 
-{% if 'react_chat' in my_transitive_reverse_dependency_modules %}
 export function App() {
-{% else %}
-function App() {
-{% endif %}
 {% if 'react_chat' not in my_transitive_reverse_dependency_modules %}
     const [count, setCount] = useState(0);
     const [welcome, setWelcome] = useState('Loading...');
