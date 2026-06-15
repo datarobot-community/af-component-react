@@ -28,4 +28,5 @@ tasks:
   dev:
     desc: 🚀 Start React development server
     cmds:
+      - task -d ../infra dev &
       - npm run dev
