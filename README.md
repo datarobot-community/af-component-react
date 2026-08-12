@@ -33,6 +33,8 @@ The React Frontend Component. Adds a react frontend to an existing fastapi-serve
 
 The component ships a React app scaffold, a Vite build pipeline, the [dr-ui](https://dr-ui.datarobot.com/en/docs/) component registry, and the Pulumi infrastructure glue that embeds the compiled frontend into a DataRobot `ApplicationSource`. Because the component is repeatable, you can apply it more than once to add multiple independent React frontends to a single project — each with its own answer file and app name.
 
+The scaffold also bundles an **accessibility** skill under `.agents/skills/accessibility/` — guidance that helps AI coding agents author and review WCAG 2.2 AA-compliant UI (surfaced to Claude via the base component's `.claude/skills` symlink).
+
 
 # Table of contents
 
