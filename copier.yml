@@ -19,5 +19,14 @@ _external_data:
   base: "{{ base_answers_file }}"
   fastapi: "{{ fastapi_answers_file }}"
 
+# The BugBot rules are meant to be calibrated per app, so a project's own copy must
+# survive updates. Measured on copier 9.17.1 against a repo holding a hand-written
+# version: this setting preserves it byte-for-byte under `copier update --conflict=rej`.
+# Without it the file is replaced; under the default --conflict=inline it is rewritten
+# with both versions merged in, with or without this setting. Hence the README telling
+# consumers to pass --conflict=rej on the update that first introduces the file.
+_skip_if_exists:
+  - "{{ react_app_name }}/.cursor/BUGBOT.md"
+
 _subdirectory: template
 _answers_file: ".datarobot/answers/react-{{ react_app_name }}.yml"
