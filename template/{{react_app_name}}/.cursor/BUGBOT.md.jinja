@@ -65,8 +65,10 @@ line rather than reviewing from memory of WCAG.
   no replacement indicator is a real finding.
 
 - **Both themes are reachable.** `theme/theme-provider.tsx` toggles the `dark` class on the document
-  element, defaulting to the user's `prefers-color-scheme`. A light-mode contrast problem is a real
-  finding — do not dismiss one as "dark theme only".
+  element, defaulting to the user's `prefers-color-scheme`, so never dismiss a light-mode colour
+  problem as "dark theme only" — both themes are in scope. Keep the skill's split intact, though:
+  colour-*only* meaning (1.4.1) is a real finding, while contrast *ratio* stays `[advisory — verify]`
+  and is therefore dropped under Output. Being in scope does not promote a ratio concern to reportable.
 
 - **`jsx-a11y` recommended already runs on this directory.** `npm run lint` runs in CI on every PR
   touching `{{ react_app_name }}/**`, so anything that plugin catches is already reported there — spend
