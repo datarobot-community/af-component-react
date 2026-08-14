@@ -1,0 +1,105 @@
+# Review rules — {{ react_app_name }}
+
+## Accessibility
+
+Apply [the repo's accessibility skill](../../.agents/skills/accessibility/SKILL.md) as written. It is
+WCAG 2.2 AA, and it carries its own evidence contract, severity scale and best-practice-note bucket —
+follow those, not a general impression of what an accessibility review is. Consult the bundle that
+matches what the diff changed:
+
+- [structure & keyboard](../../.agents/skills/accessibility/references/structure-keyboard.md) —
+  interactive elements, `div`/`span` as controls, tabindex, focus, custom widgets, headings, landmarks,
+  the app shell, motion
+- [names & forms](../../.agents/skills/accessibility/references/names-forms.md) — accessible names,
+  `aria-*`, roles, icon-only buttons, `alt`, links, inputs, labels, errors
+- [feedback & live regions](../../.agents/skills/accessibility/references/feedback-live.md) — anything
+  that changes on screen without a navigation
+- [tables & grids](../../.agents/skills/accessibility/references/tables-grids.md) — `<table>`,
+  `role="grid"`, sortable/selectable data, tabular data built from `div`s
+- [contrast & colour](../../.agents/skills/accessibility/references/contrast-advisory.md) — colour-only
+  meaning, selected/active states, focus-ring contrast, theming, disabled styling
+- [review scope](../../.agents/skills/accessibility/references/review-scope.md) — the visibility and
+  instance rules; applies to every review
+
+Those links load as rules in their own right — verified with `bugbot run verbose=true`, which lists all
+seven as included and untruncated. If that ever stops being true and you cannot read them, say so in one
+line rather than reviewing from memory of WCAG.
+
+### This repo
+
+- Review the UI anywhere under `{{ react_app_name }}/src/**` — not just `components/`, since UI also
+  lives in `App.tsx`, `main.tsx` and `theme/theme-provider.tsx`. `{{ react_app_name }}/index.html` is the
+  app shell (`<html lang>`, viewport meta, skip links). The stylesheets are `src/index.css` and
+  `src/theme/preset.css`, but colour and contrast work mostly lands in TypeScript and JSON instead:
+  `src/theme/colors.json`, `css-variables.ts`, `components-classes.ts` and `tailwind.config.ts`. A change
+  to focus, outline, visibility or colour is UI work wherever it lives. Skip
+  `{{ react_app_name }}/tests/**` and co-located `**/*.{test,spec}.{ts,tsx}`: those fixtures deliberately
+  attach handlers to bare elements, which is why `eslint.config.js` relaxes the interaction rules for
+  exactly those globs.
+
+- **`src/components/ui/**` is vendored, not authored here.** It is where shadcn (`new-york`) and
+  `@dr-ui` registry components land, per `components.json` — so a fix made there does not flow back
+  anywhere, and when a diff touches one, review it as source. Do not reach outside the diff.
+
+- **Wrapped primitives.** Where a component forwards props to a third-party primitive, that library
+  supplies roles, `aria-expanded`/`-selected`/`-checked`, keyboard behaviour and focus management — don't
+  report their absence on the forwarded element. This **overrides** the skill's "never assume a library
+  is accessible": review cannot read `node_modules`, so the behaviour isn't verifiable from the diff and
+  asserting it missing is a false positive. Which libraries qualify is repo-specific — see the
+  calibration section below, and note that an *unlisted* library is not licence to defer. Three limits:
+  - It defers on the **element**, never the file. A hand-rolled control, a local handler, an overridden
+    role, or changed structure in the same file still gets the full review.
+  - `@radix-ui/react-slot` supplies **no** accessibility behaviour — only polymorphic `asChild`. Watch
+    for the shape `const Comp = asChild ? Slot : 'button'` (`ui/button.tsx`): when a handler lands on a
+    non-focusable element that way, it is a real 2.1.1 finding, not a deferral. The fallback element
+    varies by component, so judge the element, not the pattern. A clean pass-through wrapper that only
+    forwards props is still not a finding.
+  - Still the wrapper's own job: the accessible **name** (icon-only triggers, a dialog or sheet title),
+    the **focus indicator** (these libraries ship no styles), and any DOM node inserted between a Root
+    and its typed children.
+
+- **Focus resets.** Tailwind v4 here, so focus styling is utility classes rather than stylesheets —
+  judge the rendered outcome, not the class name. Both `outline-none` and `outline-hidden` are in use,
+  normally paired with `focus-visible:ring-*`. Removing the outline on a focus-trapped panel whose focus
+  a primitive manages is conventional and not a finding; on a trigger, input, item or row, a reset with
+  no replacement indicator is a real finding.
+
+- **Both themes are reachable.** `theme/theme-provider.tsx` toggles the `dark` class on the document
+  element, defaulting to the user's `prefers-color-scheme`. A light-mode contrast problem is a real
+  finding — do not dismiss one as "dark theme only".
+
+- **`jsx-a11y` recommended already runs on this directory.** `npm run lint` runs in CI on every PR
+  touching `{{ react_app_name }}/**`, so anything that plugin catches is already reported there — spend
+  the comment budget on what a linter cannot see: whether a name is *meaningful*, whether focus actually
+  lands somewhere, whether an async change is announced, whether ARIA matches real behaviour.
+
+- **No automated a11y gate exists** — no axe, jest-axe or vitest-axe in the harness. Don't ask a diff
+  to add one, and don't credit it for an assertion you cannot see run.
+
+### Repo-specific calibration
+
+This file ships from the `af-component-react` template as a starting point, and **it is yours to edit**.
+Copier keeps your edits as local modifications across updates. The rules above describe only what the
+template itself ships — add what your app actually does, because the gaps below cause false positives
+rather than missed findings:
+
+- **Primitive libraries in use** (e.g. `@radix-ui/react-*`, `cmdk`, `sonner`, `react-dropzone`) — the
+  deferral above needs this list. Without it, review reports missing roles on components that have them.
+- **i18n convention** — how accessible names reach translation, which import path, and whether your
+  lint setup checks attributes as well as visible text.
+- **Any `eslint-disable jsx-a11y/*`** already in `src/**`, and why — so review doesn't re-report it.
+- **Forms** — whether a form library owns labelling and error announcement, or the DOM is hand-rolled.
+- **Rendered markdown or other generated DOM**, where naming is the app's job rather than the library's.
+
+### Output
+
+- A and AA failures only. Never emit the skill's best-practice notes, at any severity, and drop its
+  `[advisory — verify]` findings rather than posting them unlabelled.
+- Correctness first — never displace a functional bug.
+- Severity — the skill's harm scale mapped onto Cursor's, which the skill itself does not use:
+  *Blocks a task* → High, *Serious barrier* → Medium, *Nuisance* → Low.
+- At most 3 comments, High exempt. If the cap bites, add one line: "N further A/AA findings not
+  itemised".
+- One comment per problem. Never open with "consider".
+- No clean bill of health. **Overrides** the skill's "say so plainly" — when there is nothing to
+  report, report nothing. Its "do not invent issues to look thorough" still holds.
