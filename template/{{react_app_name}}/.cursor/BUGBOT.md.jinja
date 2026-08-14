@@ -59,10 +59,11 @@ line rather than reviewing from memory of WCAG.
     and its typed children.
 
 - **Focus resets.** Tailwind v4 here, so focus styling is utility classes rather than stylesheets —
-  judge the rendered outcome, not the class name. Both `outline-none` and `outline-hidden` are in use,
-  normally paired with `focus-visible:ring-*`. Removing the outline on a focus-trapped panel whose focus
-  a primitive manages is conventional and not a finding; on a trigger, input, item or row, a reset with
-  no replacement indicator is a real finding.
+  judge the rendered outcome, not the class name. The scaffold's own pattern is `outline-none` paired
+  with `focus-visible:ring-*` (see `ui/button.tsx`); `outline-hidden` behaves the same way for this
+  purpose. Removing the outline on a focus-trapped panel whose focus a primitive manages is conventional
+  and not a finding; on a trigger, input, item or row, a reset with no replacement indicator is a real
+  finding.
 
 - **Both themes are reachable.** `theme/theme-provider.tsx` toggles the `dark` class on the document
   element, defaulting to the user's `prefers-color-scheme`, so never dismiss a light-mode colour
