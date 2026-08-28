@@ -43,19 +43,27 @@ function App() {
                     <a href="https://vite.dev" target="_blank">
                         <img
                             src={viteLogo}
-                            className="h-24 p-6 transition-[filter] duration-300 hover:drop-shadow-[0_0_2em_#646cffaa]"
+                            className={`
+                              h-24 p-6 transition-[filter] duration-300
+                              hover:drop-shadow-[0_0_2em_#646cffaa]
+                            `}
                             alt="Vite logo"
                         />
                     </a>
                     <a href="https://react.dev" target="_blank">
                         <img
                             src={reactLogo}
-                            className="h-24 animate-spin p-6 transition-[filter] duration-300 [animation-duration:20s] hover:drop-shadow-[0_0_2em_#61dafbaa]"
+                            className={`
+                              h-24 animate-spin p-6 transition-[filter]
+                              duration-300
+                              [animation-duration:20s]
+                              hover:drop-shadow-[0_0_2em_#61dafbaa]
+                            `}
                             alt="React logo"
                         />
                     </a>
                 </div>
-                <h1 className="heading-01 my-4">Vite + React: {welcome}</h1>
+                <h1 className="my-4 heading-01">Vite + React: {welcome}</h1>
                 <div className="p-8">
                     <Button onClick={() => setCount(count => count + 1)}>count is {count}</Button>
                     <p className="mt-4">
