@@ -1,4 +1,6 @@
-import { useState, createContext, useContext, useLayoutEffect } from 'react';
+'use client';
+
+import { useState, createContext, useContext, useLayoutEffect, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -32,7 +34,7 @@ const getInitialTheme = () => {
 export const ThemeProvider = ({
     children,
 }: {
-    children: React.ReactNode | ((props: { theme: Theme }) => React.ReactNode);
+    children: ReactNode | ((props: { theme: Theme }) => ReactNode);
 }) => {
     const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
 

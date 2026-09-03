@@ -4,7 +4,12 @@ import cssVariablesPlugin, { drColors } from './css-variables';
 import componentsClassesPlugin from './components-classes';
 
 const config = {
-    content: ['../**/*.{js,ts,jsx,tsx,mdx}'],
+    content: [
+        './app/**/*.{js,ts,jsx,tsx,mdx}',
+        './components/**/*.{js,ts,jsx,tsx,mdx}',
+        './registry/**/*.{js,ts,jsx,tsx,mdx}',
+        './src/**/*.{js,ts,jsx,tsx,mdx}',
+    ],
     theme: {
         extend: {
             colors: {
